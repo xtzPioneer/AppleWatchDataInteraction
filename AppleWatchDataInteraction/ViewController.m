@@ -28,7 +28,6 @@
     self.session.delegate=self;
     //必须激活session
     [self.session activateSession];
-    
     //UI布局
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
     button.center = self.view.center;
@@ -69,7 +68,6 @@
     }
     NSData * avatarData=UIImageJPEGRepresentation([UIImage imageNamed:@"001"], 0.5);
     NSString *contnet = [@"Hello," stringByAppendingString:[NSString stringWithFormat:@"--%@",[self dateStr]]];
-    NSLog(@"avatarData:%@",avatarData);
     NSDictionary * infoDict=@{txAvatar:avatarData,
                               txName:@"zhangxiong",
                               txContent:contnet
@@ -88,15 +86,15 @@
 //发送会失败回调
 - (void)session:(WCSession *)session didFinishUserInfoTransfer:(WCSessionUserInfoTransfer *)userInfoTransfer error:(NSError *)error {
     if (!error) {
-        NSLog(@"发送成功");
+        NSLog(@"iOS消息发送成功");
     }else{
-        NSLog(@"发送失败:%@",error);
+        NSLog(@"iOS消息发送失败:%@",error);
     }
 }
 //接收数据回调-方法1 配合transferUserInfo使用
 - (void)session:(WCSession *)session didReceiveUserInfo:(NSDictionary<NSString *,id> *)userInfo{
     if (userInfo) {
-        NSLog(@"接收到数据:%@",userInfo);
+        NSLog(@"iOS接收到消息:%@",userInfo);
         NSLog(@"线程---1=%@",[NSThread currentThread]);
         __weak typeof(self) weakSelf=self;
         dispatch_async(dispatch_get_main_queue(),^{
@@ -107,7 +105,7 @@
             [weakSelf.timer setFireDate:date];
         });
     }else{
-        NSLog(@"没有接收到数据");
+        NSLog(@"iOS没有接收到消息");
     }
     
 }
@@ -115,7 +113,7 @@
 //接收数据回调-方法2 配合sendMessage使用
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message{
     if (message) {
-        NSLog(@"接收到数据:%@",message);
+        NSLog(@"iOS接收到消息:%@",message);
         NSLog(@"线程---1=%@",[NSThread currentThread]);
         __weak typeof(self) weakSelf=self;
         dispatch_async(dispatch_get_main_queue(),^{
@@ -126,7 +124,7 @@
             [weakSelf.timer setFireDate:date];
         });
     }else{
-        NSLog(@"没有接收到数据");
+        NSLog(@"iOS没有接收到消息");
     }
 }
 - (void)didReceiveMemoryWarning {

@@ -34,8 +34,11 @@
 - (void)willActivate {
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
+    //初始化WCSession(数据交互)
     self.session =[WCSession defaultSession];
+    //遵循WCSessionDelegate代理
     self.session.delegate=self;
+    //必须激活session
     [self.session activateSession];
 }
 
@@ -61,28 +64,28 @@
 //发送会失败回调
 - (void)session:(WCSession *)session didFinishUserInfoTransfer:(WCSessionUserInfoTransfer *)userInfoTransfer error:(NSError *)error {
     if (!error) {
-        NSLog(@"发送成功");
+        NSLog(@"watch消息发送成功");
     }else{
-        NSLog(@"发送失败:%@",error);
+        NSLog(@"watch消息发送失败:%@",error);
     }
 }
 //接收数据回调-方法1 配合transferUserInfo使用
 - (void)session:(WCSession *)session didReceiveUserInfo:(NSDictionary<NSString *,id> *)userInfo{
     if (userInfo) {
-        NSLog(@"接收到数据:%@",userInfo);
+        NSLog(@"watch接收到消息:%@",userInfo);
         [self upData:userInfo];
     }else{
-        NSLog(@"没有接收到数据");
+        NSLog(@"watch没有接收到消息");
     }
 }
 
 //接收数据回调-方法2 配合sendMessage使用
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message{
     if (message) {
-        NSLog(@"接收到数据:%@",message);
+        NSLog(@"watch接收到消息:%@",message);
         [self upData:message];
     }else{
-        NSLog(@"没有接收到数据");
+        NSLog(@"watch没有接收到消息");
     }
 }
 - (void)upData:(NSDictionary*)dict{
